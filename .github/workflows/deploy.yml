@@ -1,0 +1,23 @@
+name: Deploy to Kinsta WordPress
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.KINSTA_GITHUB_DEPLOY_KEY }}
+
+      - name: Deploy to Kinsta
+        run: |
+          ssh githubdeploy@34.77.168.230 -p 62970 "cd /www/githubdeploy_865/public && git pull"
